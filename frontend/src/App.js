@@ -20,7 +20,7 @@ class App extends Component {
               hideWhenDoneDelay: 500,
             }}
           >
-            Hello world from our software-engineering program!
+            Hello world from our software-engineering project!
           </Typist>
         </header>
       </div>
