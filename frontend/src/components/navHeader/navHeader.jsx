@@ -14,6 +14,8 @@ import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 
+import { Link } from "react-router-dom";
+
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -127,7 +129,11 @@ export default function NavHeader(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>登录/注册</MenuItem>
+      {/* <MenuItem> */}
+      <Link to="/login">
+        <MenuItem>登录/注册</MenuItem>
+      </Link>
+      {/* </MenuItem> */}
     </Menu>
   );
 
