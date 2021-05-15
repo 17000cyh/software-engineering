@@ -139,11 +139,12 @@ def get_user_base_infor(user_id):
 def get_message_between_two(begin_user,send_user):
     """
     这个函数获取了用户之间的聊天信息。
-    但是，在查找的时候需要注意不能仅仅查找从
+    但是，在查找的时候需要注意不能仅仅查找从begin_user查找到send_user，
+    也需要查找从send_user到begin_user的信息。
+    最终我们的返回将会是一个message_list，这个list的元素都是字典，字典的内容如下：
+    {'content':私信的内容,'time':信息发送的时间,'from_user_id':信息发起者的id,'to_user_id':信息接受者的id}
+    注意：返回的时候，需要按照时间的先后进行排序，最后发送的消息放到最前面
     :param begin_user:
     :param send_user:
-    :return:
+    :return:message_list
     """
-
-
-
