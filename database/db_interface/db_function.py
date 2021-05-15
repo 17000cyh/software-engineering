@@ -72,3 +72,38 @@ def get_good_base_infor(id):
     :return:good_infor
     """
     pass
+
+def get_five_user_collection(user_id):
+    """
+    这个函数根据user的id获取他最近收藏的五个商品或者文章的信息（这个地方如果不好做就先随机选也行），返回是一个list。list当中的每一个元素是一个字典，如下：
+    {'type','name','id'}
+    由于用户的收藏可能是一个文章，也可能是一个商品，所以这个地方需要用type标记出来
+    如果用户收藏的是文章，则'name'表示文章的title。如果收藏的是商品，则表示的就是商品的名称。
+    :param user_id:
+    :return:collection_list
+    """
+    pass
+
+def get_five_user_history(user_id):
+    """
+    这个函数根据user的id获取他最近访问的五个商品或者文章的信息（这个地方如果不好做就先随机选也行），返回是一个list。list当中的每一个元素是一个字典，如下：
+    {'type','name','id'}
+    由于用户访问的可能是一个文章，也可能是一个商品，所以这个地方需要用type标记出来
+    如果用户访问的是文章，则'name'表示文章的title。如果访问的是商品，则表示的就是商品的名称。
+    :param user_id:
+    :return:history_list
+    """
+    pass
+
+def get_tips(user_id):
+    """
+    这个函数根据user的id，查看user是否有没有阅读的消息。
+    一般而言，当用户获得一个点赞，或者有人私信用户，或者有人评论用户时，需要在数据库中某一个"未读"表当中进行更新
+    当用户阅读了这些信息的时候，再讲这些信息进行删除。
+    返回是一个字典Tips,如下：
+    {'likes':一个布尔值，表示是否有新增的点赞,'reply':布尔值，有无新回复,'message':布尔值，有无新私信}
+
+    :param user_id:
+    :return:tips
+    """
+    pass
