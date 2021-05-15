@@ -35,3 +35,7 @@ def insert_user(username,phone,mail,password,user_id):
     :return:None
     """
     pass
+
+
+def test():
+    pass
