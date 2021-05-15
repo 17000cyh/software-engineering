@@ -5,7 +5,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-// import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -14,6 +13,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import CopyRight from "../../components/copyRight/copyRight";
 import { Link } from "react-router-dom";
+import { tryLogin } from "../../service/userService";
+import { useSnackbar } from "notistack";
+
+const WRONG_EMAIL = 1;
+const WRONG_PASSWORD = 2;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,6 +41,28 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LoginPage() {
   const classes = useStyles();
+  let user = {
+    email: "",
+    password: "",
+  };
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let res = tryLogin(user.email, user.password);
+    console.log(res);
+    if (res.status === false) {
+      if (res.code === WRONG_EMAIL) {
+        enqueueSnackbar("此邮箱还未注册", { variant: "error" });
+      } else if (res.code === WRONG_PASSWORD) {
+        enqueueSnackbar("密码错误", { variant: "error" });
+      } else {
+        enqueueSnackbar("未知错误", { variant: "error" });
+      }
+    } else {
+      enqueueSnackbar("登录成功", { variant: "success" });
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -48,7 +74,11 @@ export default function LoginPage() {
         <Typography component="h1" variant="h5">
           登录到 CYW
         </Typography>
-        <form className={classes.form} noValidate>
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={handleSubmit.bind(this)}
+        >
           <TextField
             variant="outlined"
             margin="normal"
@@ -59,6 +89,9 @@ export default function LoginPage() {
             name="email"
             autoComplete="email"
             autoFocus
+            onChange={(event) => {
+              user.email = event.target.value;
+            }}
           />
           <TextField
             variant="outlined"
@@ -70,6 +103,9 @@ export default function LoginPage() {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={(event) => {
+              user.password = event.target.value;
+            }}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
