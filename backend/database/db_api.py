@@ -241,6 +241,114 @@ def get_tips(user_id):
         'message': len(mres) != 0
     }
 
+def get_random_ten_good():
+    """
+    这个函数获取十个随机的商品信息，返回是一个good_list列表，列表当中的每一个元素是一个字典good，
+    good的元素如下：
+    {'name':商品的名称,'img_path':商品的图片路径,'type':商品的类型,'price':商品的架构}
+    :return:good_list
+    """
+
+    res = CYWDB.query('Good', {}, ["good_id"])
+    goodIdList = [dct["good_id"] for dct in res]
+
+    choosedId = np.random.choice(goodIdList, 10, replace = False)
+    returnList = []
+    for i in range(choosedId.shape[0]):
+        id = choosedId[i]
+        res = CYWDB.query('Good', {"good_id": id},
+                ["good_name", "good_type", "good_price", "good_imgpath"])
+        assert(len(res)) == 1
+
+        returnList.append({
+                'name': res[0]['good_name'],
+                'img_path': res[0]['good_imgpath'],
+                'type': res[0]['good_type'],
+                'price': res[0]['good_price']
+            }
+        )
+        
+    return returnList
+
+def get_user_communicate(user_id):
+    """
+    这个函数通过用户的id，找出了所有和用户有过交谈的人，并且按照最后一次交谈的时间形成了一个列表
+    列表当中的内容是与之交谈的用户的id，其中，最后一个与之交谈的用户的id放在最前面
+    :param user_id:
+    :return:user_communicate_list
+    """
+    sres = CYWDB.query('Message', {"ms_senderid": user_id}, ["ms_receiverid", "ms_time"])
+    rres = CYWDB.query('Message', {"ms_receiverid": user_id}, ["ms_senderid", "ms_time"])
+
+    rList = [{'user': dct['ms_receiverid'], 'time': dct['ms_time']} for dct in sres] +\
+                    [{'user': dct['ms_senderid'], 'time': dct['ms_time']} for dct in rres]
+    rList.sort(key = lambda dct: -dct['time'])
+    
+    returnList = []
+    rdct = {}   #### hash dict, to accelerate checking process
+
+    for dct in rList:
+        id = dct['user']
+        if id not in rdct:
+            returnList.append(id)
+            rdct[id] = 0
+    return returnList
+
+def get_user_base_infor(user_id):
+    """
+    这个函数获取了用户的基本信息，包括名称、头像以及id，即：
+    {'name','profile_path','user_id'}
+    :param user_id:
+    :return:infor
+    """
+    res = CYWDB.query('User', {"user_id": user_id}, ["user_name", "user_profilepath"])
+    assert(len(res) == 1)
+
+    return {
+        'name': res[0]['user_name'],
+        'profile_path': res[0]['user_profilepath'],
+        'user_id': user_id
+    }
+
+def get_message_between_two(begin_user,send_user):
+    """
+    这个函数获取了用户之间的聊天信息。
+    但是，在查找的时候需要注意不能仅仅查找从begin_user查找到send_user，
+    也需要查找从send_user到begin_user的信息。
+    最终我们的返回将会是一个message_list，这个list的元素都是字典，字典的内容如下：
+    {'content':私信的内容,'time':信息发送的时间,'from_user_id':信息发起者的id,'to_user_id':信息接受者的id}
+    注意：返回的时候，需要按照时间的先后进行排序，最后发送的消息放到最前面
+    :param begin_user:
+    :param send_user:
+    :return:message_list
+    """
+    sres = CYWDB.query('Message', {"ms_senderid": begin_user, "ms_receiverid": send_user}, 
+                        ["ms_content", "ms_time"])
+    rres = CYWDB.query('Message', {"ms_senderid": send_user, "ms_receiverid": begin_user}, 
+                        ["ms_content", "ms_time"])
+    res = rres + sres
+    res.sort(key = lambda dct: -dct['ms_time'])
+    return  [
+        {
+            'content': dct['ms_content'],
+            'time': dct['ms_time'],
+            'from_user_id': dct['ms_senderid'],
+            'to_user_id': dct['ms_receiverid']
+        }
+        for dct in res
+    ]
+
+
+def insert_message(user_id,target_user_id,content,time):
+    """
+    这个函数插入一些私信的信息
+    :param user_id:
+    :param target_user_id:
+    :param content:
+    :return:None
+    """
+    CYWDB.insert('Message', [user_id, target_user_id, content, time])
+
 if __name__ == '__main__':
     insert_user("a", "password", 1234567, 'a@cyw.com')
     insert_user("b", "password", 1111111, 'b@cyw.com')

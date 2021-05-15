@@ -59,7 +59,8 @@ class Database:
                                 Field("ms_id", True, "INTEGER", False),
                                 Field("ms_senderid", False, "TNTEGER", False),
                                 Field("ms_receiverid", False, "INTEGER", False),
-                                Field("ms_content", False, "TEXT", False)
+                                Field("ms_content", False, "TEXT", False),
+                                Field("ms_time", False, "INTEGER", False)
                             ]),
             "UnreadMessage" :   Table("UnreadMessageList", [
                                 Field("ums_id", True, "INTEGER", False),
@@ -85,6 +86,7 @@ class Database:
                                 Field("good_price", False, "REAL", False),
                                 Field("good_type", False, "TEXT", False),
                                 Field("good_info", False, "TEXT", True),
+                                Field("good_imgpath", False, "TEXT", True)
                             ]),
             "KeywordGood" :    Table("KeywordGoodList", [
                                 Field("kg_id", True, "INTEGER", False),
