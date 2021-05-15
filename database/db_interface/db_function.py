@@ -59,7 +59,7 @@ def get_random_ten_article():
     这个函数获取10篇随机的文章
     :return:article_list
     返回一个列表，列表当中的每一个元素都是一个字典，键包括：
-    {'article_name','article_content','article_id','author','related_good_list','id'}
+    {'article_name','article_content','id','author','related_good_list'}
     其中，related_good_list是一个关联商品id的列表
     """
     pass
