@@ -22,6 +22,8 @@ class Database:
                                 Field("user_id", True, "INTEGER", False),
                                 Field("user_name", False, "TEXT", False),
                                 Field("user_password", False, "TEXT", False),
+                                Field("user_phonenumber", False, "INTEGER", False),
+                                Field("user_email", False, "TEXT", False),
                                 Field("user_info", False, "TEXT", True),
                             ]),
             "Friend" :    Table("FriendRelationList", [
@@ -95,7 +97,7 @@ class Database:
                 command += fieldStr
             command = command[:-2]
             command += '\n);'
-            print(command)
+            #print(command)
             self.cursor.execute(command)
             self.conn.commit()
     def insert(self, tableName, valueList):
@@ -110,9 +112,9 @@ class Database:
             if table.fieldList[i + 1].dataType == "TEXT":
                 command += "\'"  + value + "\',"
             else:
-                command += value + ","
+                command += str(value) + ","
         command = command[:-1] + ");"
-        print(command)
+        #print(command)
         self.cursor.execute(command)
         self.conn.commit()
     def query(self, tableName, conditionDict, fieldList):
@@ -121,16 +123,21 @@ class Database:
         for field in fieldList:
             command += field + ","
         command = command[:-1]
-        command += " FROM " + table.name + " WHERE "
-        for field, value in conditionDict.items():
-            command += field + "="
-            if table.name2field[field].dataType == "TEXT":
-                command += "\'" + value + "\'"
-            else:
-                command += value
-            command += " AND "
-        command = command[:-5] + ";"
-        print(command)
+        command += " FROM " + table.name
+
+        if len(conditionDict.items()) != 0:
+            command += " WHERE "
+            for field, value in conditionDict.items():
+                command += field + "="
+                if table.name2field[field].dataType == "TEXT":
+                    command += "\'" + value + "\'"
+                else:
+                    command += str(value)
+                command += " AND "
+            command = command[:-5] + ";"
+        else:
+            command += ";"
+        #print(command)
         self.cursor.execute(command)
         self.conn.commit()
         res = []
@@ -158,7 +165,7 @@ class Database:
                 command += value
             command += " AND "
         command = command[:-5] + ";"
-        print(command)
+        #print(command)
         self.cursor.execute(command)
         self.conn.commit()
     def remove(self, tableName, conditionDict):
@@ -169,24 +176,27 @@ class Database:
             if table.name2field[field].dataType == "TEXT":
                 command += "\'" + value + "\'"
             else:
-                command += value
+                command += str(value)
             command += " AND "
         command = command[:-5] + ";"
-        print(command)
+        #print(command)
         self.cursor.execute(command)
         self.conn.commit()
 
-if __name__ == '__main__':
-    CYW = Database()
-    CYW.insert("User", ["wsw", "password", "i am wsw"])
-    #CYW.remove("User", {"user_name": "wsw"})
-    print(CYW.query("User", {"user_name": "wsw"}, ["user_info"]))
-    CYW.modify("User", {"user_name": "wsw"}, ["user_info", "new info"])
-    print(CYW.query("User", {"user_name": "wsw"}, ["user_info"]))
+CYWDB = Database()
 
+if __name__ == '__main__':
+    '''CYWDB.insert("User", ["wsw", "password",111 11111111,"i am wsw"])
+    #CYWDB.remove("User", {"user_name": "wsw"})
+    print(CYWDB.query("User", {"user_name": "wsw"}, ["user_info"]))
+    CYWDB.modify("User", {"user_name": "wsw"}, ["user_info", "new info"])
+    print(CYWDB.query("User", {"user_name": "wsw"}, ["user_info"]))
+    print(CYWDB.query("User", {"user_name": "wsw"}, ["user_phonenumber"]))
+    print(CYWDB.query("User", {}, ["user_phonenumber"]))
+'''
     ### import goods data into database
 
-    import json
+    '''import json
     dataFile = '../jdspider/pL2.json'
     goodList = json.load(open(dataFile, "r"))
 
@@ -203,4 +213,5 @@ if __name__ == '__main__':
         infoStr = infoStr.replace('\'', '').replace('\"', '')
 
         print(name, price, infoStr)
-        CYW.insert("Good", [name, price, infoStr])
+        CYWDB.insert("Good", [name, price, infoStr])
+'''
