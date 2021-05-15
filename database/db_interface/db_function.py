@@ -107,3 +107,43 @@ def get_tips(user_id):
     :return:tips
     """
     pass
+
+def get_random_ten_good():
+    """
+    这个函数获取十个随机的商品信息，返回是一个good_list列表，列表当中的每一个元素是一个字典good，
+    good的元素如下：
+    {'name':商品的名称,'img_path':商品的图片路径,'type':商品的类型,'price':商品的架构}
+    :return:good_list
+    """
+    pass
+
+
+def get_user_communicate(user_id):
+    """
+    这个函数通过用户的id，找出了所有和用户有过交谈的人，并且按照最后一次交谈的时间形成了一个列表
+    列表当中的内容是与之交谈的用户的id，其中，最后一个与之交谈的用户的id放在最前面
+    :param user_id:
+    :return:user_communicate_list
+    """
+    pass
+
+def get_user_base_infor(user_id):
+    """
+    这个函数获取了用户的基本信息，包括名称、头像以及id，即：
+    {'name','profile_path','user_id'}
+    :param user_id:
+    :return:infor
+    """
+    pass
+
+def get_message_between_two(begin_user,send_user):
+    """
+    这个函数获取了用户之间的聊天信息。
+    但是，在查找的时候需要注意不能仅仅查找从
+    :param begin_user:
+    :param send_user:
+    :return:
+    """
+
+
+
