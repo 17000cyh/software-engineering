@@ -31,10 +31,29 @@ class Database:
                                 Field("fr_userid", False, "TNTEGER", False),
                                 Field("fr_frid", False, "INTEGER", False),
                             ]),
-            "Collection" :    Table("UserCollectionList", [
-                                Field("cl_id", True, "INTEGER", False),
-                                Field("cl_userid", False, "TNTEGER", False),
-                                Field("cl_goodid", False, "INTEGER", False),
+            "CollectionGood" :    Table("CollectionGoodList", [
+                                Field("clg_id", True, "INTEGER", False),
+                                Field("clg_userid", False, "TNTEGER", False),
+                                Field("clg_goodid", False, "INTEGER", False),
+                                Field("clg_time", False, "INTEGER", False),
+                            ]),
+            "CollectionArticle" :    Table("CollectionArticleList", [
+                                Field("cla_id", True, "INTEGER", False),
+                                Field("cla_userid", False, "TNTEGER", False),
+                                Field("cla_articleid", False, "INTEGER", False),
+                                Field("cla_time", False, "INTEGER", False),
+                            ]),
+            "AccessGood" :    Table("AccessGoodList", [
+                                Field("acg_id", True, "INTEGER", False),
+                                Field("acg_userid", False, "TNTEGER", False),
+                                Field("acg_goodid", False, "INTEGER", False),
+                                Field("acg_time", False, "INTEGER", False),
+                            ]),
+            "AccessArticle" :    Table("AccessArticleList", [
+                                Field("aca_id", True, "INTEGER", False),
+                                Field("aca_userid", False, "TNTEGER", False),
+                                Field("aca_articleid", False, "INTEGER", False),
+                                Field("aca_time", False, "INTEGER", False),
                             ]),
             "Message" :   Table("MessageList", [
                                 Field("ms_id", True, "INTEGER", False),
@@ -42,11 +61,29 @@ class Database:
                                 Field("ms_receiverid", False, "INTEGER", False),
                                 Field("ms_content", False, "TEXT", False)
                             ]),
-            
+            "UnreadMessage" :   Table("UnreadMessageList", [
+                                Field("ums_id", True, "INTEGER", False),
+                                Field("ums_senderid", False, "TNTEGER", False),
+                                Field("ums_receiverid", False, "INTEGER", False),
+                                Field("ums_msid", False, "INTEGER", False)
+                            ]),
+            "UnreadLikes" :   Table("UnreadLikesList", [
+                                Field("ulk_id", True, "INTEGER", False),
+                                Field("ulk_senderid", False, "TNTEGER", False),
+                                Field("ulk_receiverid", False, "INTEGER", False)
+                            ]),
+            "UnreadReply" :   Table("UnreadReplyList", [
+                                Field("ure_id", True, "INTEGER", False),
+                                Field("ure_senderid", False, "TNTEGER", False),
+                                Field("ure_receiverid", False, "INTEGER", False),
+                                Field("ure_msid", False, "INTEGER", False)
+                            ]),
+
             "Good" :      Table("GoodList", [
                                 Field("good_id", True, "INTEGER", False),
                                 Field("good_name", False, "TEXT", False),
                                 Field("good_price", False, "REAL", False),
+                                Field("good_type", False, "TEXT", False),
                                 Field("good_info", False, "TEXT", True),
                             ]),
             "KeywordGood" :    Table("KeywordGoodList", [
