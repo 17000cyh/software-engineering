@@ -3,7 +3,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -12,6 +11,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import CopyRight from "../../components/copyRight/copyRight";
 import { Link } from "react-router-dom";
+import { trySignup } from "../../service/userService";
+import { useSnackbar } from "notistack";
+
+const DUPLICATE_PHONE = 1;
+const DUPLICATE_EMAIL = 2;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -34,7 +38,33 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignupPage() {
+  let user = {
+    email: "",
+    tel: "",
+    password: "",
+    name: "",
+  };
+
   const classes = useStyles();
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let res = trySignup(user.tel, user.email, user.name, user.password);
+    console.log(res);
+    if (res.status === false) {
+      if (res.code === DUPLICATE_PHONE) {
+        enqueueSnackbar("该手机号已经被注册", { variant: "error" });
+      } else if (res.code === DUPLICATE_EMAIL) {
+        enqueueSnackbar("该邮箱已经被注册", { variant: "error" });
+      } else {
+        enqueueSnackbar("未知错误", { variant: "error" });
+      }
+    } else {
+      enqueueSnackbar("注册成功", { variant: "success" });
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -46,8 +76,25 @@ export default function SignupPage() {
         <Typography component="h1" variant="h5">
           注册
         </Typography>
-        <form className={classes.form} noValidate>
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={handleSubmit.bind(this)}
+        >
           <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="name"
+                label="用户名"
+                name="name"
+                onChange={(event) => {
+                  user.name = event.target.value;
+                }}
+              />
+            </Grid>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -57,6 +104,9 @@ export default function SignupPage() {
                 label="手机号码"
                 name="tel"
                 autoComplete="tel"
+                onChange={(event) => {
+                  user.tel = event.target.value;
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -68,6 +118,9 @@ export default function SignupPage() {
                 label="邮箱"
                 name="email"
                 autoComplete="email"
+                onChange={(event) => {
+                  user.email = event.target.value;
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -80,6 +133,9 @@ export default function SignupPage() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={(event) => {
+                  user.password = event.target.value;
+                }}
               />
             </Grid>
           </Grid>
