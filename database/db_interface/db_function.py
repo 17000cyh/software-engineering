@@ -148,3 +148,13 @@ def get_message_between_two(begin_user,send_user):
     :param send_user:
     :return:message_list
     """
+    pass
+
+def insert_message(user_id,target_user_id,content,time):
+    """
+    这个函数插入一些私信的信息
+    :param user_id:
+    :param target_user_id:
+    :param content:
+    :return:None
+    """
