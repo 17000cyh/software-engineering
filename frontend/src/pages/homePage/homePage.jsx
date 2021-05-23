@@ -5,6 +5,7 @@ import NavTabs from "../../components/navTabs/navTabs";
 import ArticleItem from "../../components/articleItem/articleItem";
 import { fetchArticles } from "../../service/articleService";
 import ArticleList from "../../components/articleList/articleList";
+import NavSider from "../../components/navSider/navSider";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,7 +38,9 @@ const HomePage = (props) => {
               <ArticleList />
             </Grid>
             <Grid item xs={3}>
-              <Paper className={classes.paper}>Sider</Paper>
+              <Paper className={classes.paper}>
+                <NavSider />
+              </Paper>
             </Grid>
           </Grid>
         </Grid>

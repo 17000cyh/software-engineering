@@ -1,8 +1,10 @@
 import axios from "axios";
+import { getBaseURL } from "../static/config";
 
 export function fetchArticles(userId) {
   let articles = [];
   let hasMore = false;
+  axios.defaults.baseURL = getBaseURL();
   axios
     .post("/articles", {
       userId: userId,

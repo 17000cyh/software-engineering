@@ -1,9 +1,11 @@
 import axios from "axios";
+import { getBaseURL } from "../static/config";
 
 export function tryLogin(mail, password) {
   let status = false;
   let code = -1;
   let user_id = -1;
+  axios.defaults.baseURL = getBaseURL();
   axios
     .post("/login", {
       mail: mail,
