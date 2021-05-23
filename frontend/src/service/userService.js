@@ -13,7 +13,7 @@ export function tryLogin(mail, password) {
       console.log(err);
     })
     .then((response) => {
-      status = response.data.sigh_in_success;
+      status = response.data.sign_in_success;
       code = response.data.wrong_code;
       user_id = response.data.user_id;
     })
