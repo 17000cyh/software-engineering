@@ -17,17 +17,33 @@ const NavSider = (props) => {
           </Button>
         </Grid>
         <Grid item>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            component={Link}
+            to="/login"
+          >
             我的收藏
           </Button>
         </Grid>
         <Grid item>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            component={Link}
+            to="/login"
+          >
             历史检索
           </Button>
         </Grid>
+
         <Grid item>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            component={Link}
+            to="/login"
+          >
             系统信息
           </Button>
         </Grid>

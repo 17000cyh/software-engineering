@@ -1,4 +1,16 @@
-import { AppBar, Grid, makeStyles, Paper, Tabs, Tab } from "@material-ui/core";
+import {
+  AppBar,
+  Grid,
+  makeStyles,
+  Paper,
+  Tabs,
+  Tab,
+  useScrollTrigger,
+  Zoom,
+  Fab,
+  Typography,
+} from "@material-ui/core";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import React from "react";
 import NavHeader from "../../components/navHeader/navHeader";
 import NavTabs from "../../components/navTabs/navTabs";
@@ -21,9 +33,40 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "left",
   },
 }));
+
+function ScrollTop(props) {
+  const { children, window } = props;
+  const classes = useStyles();
+  // Note that you normally won't need to set the window ref as useScrollTrigger
+  // will default to window.
+  // This is only being set here because the demo is in an iframe.
+  const trigger = useScrollTrigger({
+    target: window ? window() : undefined,
+    disableHysteresis: true,
+    threshold: 100,
+  });
+
+  const handleClick = (event) => {
+    const anchor = (event.target.ownerDocument || document).querySelector(
+      "#back-to-top-anchor"
+    );
+
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
+
+  return (
+    <Zoom in={trigger}>
+      <div onClick={handleClick} role="presentation" className={classes.root}>
+        {children}
+      </div>
+    </Zoom>
+  );
+}
+
 const HomePage = (props) => {
   const classes = useStyles();
-  let articles = fetchArticles(-1);
   return (
     <React.Fragment>
       <Grid container spacing={3} direction="column">
@@ -39,12 +82,18 @@ const HomePage = (props) => {
             </Grid>
             <Grid item xs={3}>
               <Paper className={classes.paper}>
-                <NavSider />
+                <NavSider style={{ visibility: false }} />
               </Paper>
             </Grid>
           </Grid>
         </Grid>
       </Grid>
+
+      <ScrollTop {...props}>
+        <Fab color="secondary" size="small" aria-label="scroll back to top">
+          <KeyboardArrowUpIcon />
+        </Fab>
+      </ScrollTop>
     </React.Fragment>
   );
 };
