@@ -11,10 +11,10 @@ function App() {
       <Switch>
         <Route path="/login" component={LoginPage} />
         <Route path="/signup" component={SignupPage} />
-        <Route path="/home" component={HomePage} />
+        <Route path="/home" exact component={HomePage} />
         <Route path="/not-found" component={NotFoundPage} />
         <Route path="/" exact component={HomePage} />
-        <Redirect to="/not-found" />
+        {/* <Redirect to="/not-found" /> */}
       </Switch>
     </div>
   );

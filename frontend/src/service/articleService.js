@@ -24,3 +24,19 @@ export function fetchArticles(userId) {
     articles: articles,
   };
 }
+
+export function fetchFakeArticles() {
+  let articles = [];
+  let hasMore = false;
+  hasMore = true;
+  articles = [
+    {
+      article_name: "Some Article Name",
+      article_content: "Some Article Content",
+    },
+  ];
+  return {
+    hasMore: true,
+    articles: articles,
+  };
+}

@@ -1,5 +1,5 @@
 import React, { useState, Component } from "react";
-import { fetchArticles } from "../../service/articleService";
+import { fetchArticles, fetchFakeArticles } from "../../service/articleService";
 import { Grid } from "@material-ui/core";
 import ArticleItem from "../articleItem/articleItem";
 import InfiniteScroll from "react-infinite-scroller";
@@ -8,7 +8,23 @@ class ArticleList extends Component {
   state = { hasMoreItems: true, items: [] };
   loadItems(page) {
     let self = this;
-    const response = fetchArticles();
+    let response;
+    switch (this.props.data) {
+      case "recommend":
+        response = fetchFakeArticles();
+        break;
+      case "follow":
+        response = fetchArticles();
+        break;
+      case "hot":
+        response = fetchFakeArticles();
+        break;
+
+      default:
+        response = fetchFakeArticles();
+        break;
+    }
+    // const response = fetchFakeArticles();
     const hasMore = response.hasMore;
     const newItems = response.articles;
     self.setState({

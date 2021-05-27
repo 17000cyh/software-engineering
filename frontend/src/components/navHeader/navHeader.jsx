@@ -200,7 +200,7 @@ export default function NavHeader(props) {
   return (
     <div className={classes.grow}>
       {/* <HideOnScroll {...props}> */}
-      <AppBar position="sticky">
+      <AppBar>
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
             CYW 在线购物平台
@@ -264,7 +264,7 @@ export default function NavHeader(props) {
         </Toolbar>
       </AppBar>
       {/* </HideOnScroll> */}
-      {/* <Toolbar /> */}
+      <Toolbar />
       {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
         <div>
           <Typography paragraph>Method:</Typography>

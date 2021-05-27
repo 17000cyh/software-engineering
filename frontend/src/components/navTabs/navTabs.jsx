@@ -3,6 +3,7 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,7 +59,8 @@ const AntTab = withStyles((theme) => ({
   selected: {},
 }))((props) => <Tab disableRipple {...props} />);
 
-export default function NavTabs() {
+export default function NavTabs(props) {
+  const { children } = props;
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -70,9 +72,9 @@ export default function NavTabs() {
     <div className={classes.root}>
       <div className={classes.demo1}>
         <AntTabs value={value} onChange={handleChange} aria-label="ant example">
-          <AntTab label="推荐" />
-          <AntTab label="关注" />
-          <AntTab label="热榜" />
+          <AntTab label="推荐" component={Link} to="/home/recommend" />
+          <AntTab label="关注" component={Link} to="/home/follow" />
+          <AntTab label="热榜" component={Link} to="/home/hot" />
         </AntTabs>
         {/* <Typography className={classes.padding} /> */}
       </div>

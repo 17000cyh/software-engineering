@@ -1,23 +1,19 @@
 import {
-  AppBar,
   Grid,
   makeStyles,
   Paper,
-  Tabs,
-  Tab,
   useScrollTrigger,
   Zoom,
   Fab,
-  Typography,
 } from "@material-ui/core";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import React from "react";
 import NavHeader from "../../components/navHeader/navHeader";
 import NavTabs from "../../components/navTabs/navTabs";
-import ArticleItem from "../../components/articleItem/articleItem";
-import { fetchArticles } from "../../service/articleService";
 import ArticleList from "../../components/articleList/articleList";
 import NavSider from "../../components/navSider/navSider";
+// import { Route } from "react-router";
+import { Route } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,7 +37,7 @@ function ScrollTop(props) {
   // will default to window.
   // This is only being set here because the demo is in an iframe.
   const trigger = useScrollTrigger({
-    target: window ? window() : undefined,
+    // target: window ? window() : undefined,
     disableHysteresis: true,
     threshold: 100,
   });
@@ -76,24 +72,48 @@ const HomePage = (props) => {
 
         <Grid item>
           <Grid container spacing={3} direction="row">
-            <Grid item xs={9}>
-              <NavTabs />
-              <ArticleList />
+            <Grid item xs={10}>
+              <Grid container spacing={3} direction="column">
+                <Grid item>
+                  <NavTabs />
+                </Grid>
+                <Grid item>
+                  <Route
+                    path="/home/recommend"
+                    exact
+                    render={() => <ArticleList data={"recommend"} />}
+                  />
+                  <Route
+                    path="/home/follow"
+                    exact
+                    render={() => <ArticleList data={"follow"} />}
+                  />
+                  <Route
+                    path="/home/hot"
+                    exact
+                    render={() => <ArticleList data={"hot"} />}
+                  />
+                  <ArticleList />
+                </Grid>
+                <ScrollTop {...props}>
+                  <Fab
+                    color="secondary"
+                    size="small"
+                    aria-label="scroll back to top"
+                  >
+                    <KeyboardArrowUpIcon />
+                  </Fab>
+                </ScrollTop>
+              </Grid>
             </Grid>
-            <Grid item xs={3}>
-              <Paper className={classes.paper}>
-                <NavSider style={{ visibility: false }} />
+            <Grid item xs={2}>
+              <Paper className={classes.paper} style={{ position: "sticky" }}>
+                <NavSider login={false} />
               </Paper>
             </Grid>
           </Grid>
         </Grid>
       </Grid>
-
-      <ScrollTop {...props}>
-        <Fab color="secondary" size="small" aria-label="scroll back to top">
-          <KeyboardArrowUpIcon />
-        </Fab>
-      </ScrollTop>
     </React.Fragment>
   );
 };

@@ -10,6 +10,7 @@ const NavSider = (props) => {
           <Button
             variant="contained"
             color="primary"
+            size="large"
             component={Link}
             to="/login"
           >
@@ -20,6 +21,7 @@ const NavSider = (props) => {
           <Button
             variant="contained"
             color="primary"
+            size="large"
             component={Link}
             to="/login"
           >
@@ -30,6 +32,7 @@ const NavSider = (props) => {
           <Button
             variant="contained"
             color="primary"
+            size="large"
             component={Link}
             to="/login"
           >
@@ -41,6 +44,7 @@ const NavSider = (props) => {
           <Button
             variant="contained"
             color="primary"
+            size="large"
             component={Link}
             to="/login"
           >
