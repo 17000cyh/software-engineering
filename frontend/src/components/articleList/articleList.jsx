@@ -10,18 +10,16 @@ class ArticleList extends Component {
     let self = this;
     let response;
     switch (this.props.data) {
-      case "recommend":
-        response = fetchFakeArticles();
-        break;
       case "follow":
-        response = fetchArticles();
+        response = fetchFakeArticles();
         break;
       case "hot":
-        response = fetchFakeArticles();
+        response = fetchArticles();
         break;
 
       default:
-        response = fetchFakeArticles();
+        // Recommend
+        response = fetchArticles();
         break;
     }
     // const response = fetchFakeArticles();
@@ -43,7 +41,7 @@ class ArticleList extends Component {
       >
         <Grid className="articles" container spacing={3} direction="column">
           {this.state.items.map((article) => (
-            <Grid item>
+            <Grid item key={Math.random() + article.article_name}>
               <ArticleItem
                 title={article.article_name}
                 content={article.article_content}
