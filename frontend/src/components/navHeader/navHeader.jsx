@@ -132,8 +132,10 @@ export default function NavHeader(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem> */}
+      <MenuItem onClick={handleMenuClose} component={Link} to="/profile">
+        个人中心
+      </MenuItem>
     </Menu>
   ) : (
     <Menu
