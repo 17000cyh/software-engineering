@@ -8,4 +8,5 @@ usage:
 python3 utils.py
 ```
 
-Goods information is saved in pL2.json.
+Goods information is saved in PL1.json, pL2.json.
+Images are saved in imgs

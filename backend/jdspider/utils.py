@@ -3,6 +3,7 @@ import bs4
 import json
 import codecs
 import time
+import random
 
 def keywordHtml(keyword, page=1):
     searchUrlPrefix = 'https://search.jd.com/Search?keyword='
@@ -17,7 +18,9 @@ def html2Idlst(html):
     itms = soup.find_all('li', {'class': 'gl-item'})
     lst = []
     for itm in itms:
-        lst.append(itm.attrs['data-sku'])
+        id = itm.attrs['data-sku']
+        imgurl = itm.find('img').attrs['data-lazy-img']
+        lst.append((id, imgurl))
     return lst
 
 def itemHtml(id):
@@ -58,14 +61,19 @@ def parseProduct(id):
     dct['price'] = price
     return dct
 
+def getimg(url, path):
+    html = requests.get(url)
+    f = open(path, 'wb')
+    f.write(html.content)
+    f.close()
+
 if __name__ == '__main__':
     #from dbutils import *
     #connect()
     #clearGoodslist()
     product_List = []
 
-    for keyword in ['手机', '书桌', '电脑', '冰箱', '空调', '水杯', '洗衣机']:
-                    #['水果', '男装', '女装', '图书', '蔬菜', '饮料', '运动']:#
+    for keyword in ['手机', '书桌', '电脑', '冰箱', '空调', '水杯', '洗衣机', '水果', '男装', '女装', '图书', '蔬菜', '饮料', '运动']:#
         print('keyword', keyword)
         for page in range(1, 7):
             print('page:', page)
@@ -78,22 +86,28 @@ if __name__ == '__main__':
                         break
                 except:
                     continue
-
-            for id in idlst:
+            for id, imgurl in idlst:
                 for ti in range(5):
                     try:
                         dct = parseProduct(id)
+                        imgpath = "imgs/" + id + ".jpg"
+                        getimg("https:" + imgurl, imgpath)
+
+                        dct['type'] = keyword
+                        dct['imgpath'] = imgpath
                         print('goods_id:', id)
                         print('\tname:', dct['name'])
                         print('\tprice:', dct['price'])
                         print('\tinfo:', dct['info'])
+                        print('\ttype:', dct['type'])
+                        print('\timgpath', dct['imgpath'])
                         product_List.append(dct)
                         break
                     except:
                         continue
-                time.sleep(5)
+                time.sleep(random.randint(1, 10))
 
-            time.sleep(50)
+            time.sleep(random.randint(1, 100))
 
             with codecs.open('productList.json', 'w', encoding='utf-8') as f:
                 json.dump(product_List, f, ensure_ascii=False)
