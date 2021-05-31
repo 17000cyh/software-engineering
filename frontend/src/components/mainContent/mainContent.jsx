@@ -22,13 +22,27 @@ const useStyles = makeStyles((theme) => ({
 
 const MainContent = (props) => {
   const classes = useStyles();
+  const tabs = [
+    {
+      label: "推荐",
+      to: "/home/recommend",
+    },
+    {
+      label: "关注",
+      to: "/home/follow",
+    },
+    {
+      label: "热榜",
+      to: "/home/hot",
+    },
+  ];
   return (
     <Grid item>
       <Grid container spacing={3} direction="row">
         <Grid item xs={10}>
           <Grid container spacing={3} direction="column">
             <Grid item>
-              <NavTabs />
+              <NavTabs tabs={tabs} />
             </Grid>
             <Grid item>
               <Route

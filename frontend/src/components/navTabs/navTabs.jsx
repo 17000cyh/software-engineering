@@ -60,7 +60,7 @@ const AntTab = withStyles((theme) => ({
 }))((props) => <Tab disableRipple {...props} />);
 
 export default function NavTabs(props) {
-  const { children } = props;
+  console.log(props.tabs);
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -72,9 +72,9 @@ export default function NavTabs(props) {
     <div className={classes.root}>
       <div className={classes.demo1}>
         <AntTabs value={value} onChange={handleChange} aria-label="ant example">
-          <AntTab label="推荐" component={Link} to="/home/recommend" />
-          <AntTab label="关注" component={Link} to="/home/follow" />
-          <AntTab label="热榜" component={Link} to="/home/hot" />
+          {props.tabs.map((tab) => (
+            <AntTab label={tab.label} component={Link} to={tab.to} />
+          ))}
         </AntTabs>
         {/* <Typography className={classes.padding} /> */}
       </div>

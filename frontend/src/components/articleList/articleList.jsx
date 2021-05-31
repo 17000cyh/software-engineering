@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { Component } from "react";
 import { fetchArticles, fetchFakeArticles } from "../../service/articleService";
 import { Grid } from "@material-ui/core";
 import ArticleItem from "../articleItem/articleItem";

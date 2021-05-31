@@ -6,12 +6,11 @@ import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 
-import { Link, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   AppBar,
   Badge,
   Button,
-  Collapse,
   IconButton,
   InputBase,
   Menu,
@@ -21,7 +20,6 @@ import {
   Typography,
   useScrollTrigger,
 } from "@material-ui/core";
-import LoginPage from "../../pages/loginPage/loginPage";
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -133,7 +131,7 @@ export default function NavHeader(props) {
       onClose={handleMenuClose}
     >
       {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem> */}
-      <MenuItem onClick={handleMenuClose} component={Link} to="/profile">
+      <MenuItem onClick={handleMenuClose} component={Link} to="/home/person">
         个人中心
       </MenuItem>
     </Menu>
