@@ -13,8 +13,8 @@ function App() {
         <Route path="/signup" component={SignupPage} />
         <Route path="/home" component={HomePage} />
         <Route path="/not-found" component={NotFoundPage} />
-        <Route path="/" exact component={HomePage} />
-        <Redirect to="/not-found" />
+        <Route path="/" component={HomePage} />
+        {/* <Redirect to="/not-found" /> */}
       </Switch>
     </div>
   );

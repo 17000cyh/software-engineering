@@ -1,13 +1,5 @@
 import React from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
-import Badge from "@material-ui/core/Badge";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
@@ -15,7 +7,19 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 
 import { Link } from "react-router-dom";
-
+import {
+  AppBar,
+  Badge,
+  Button,
+  IconButton,
+  InputBase,
+  Menu,
+  MenuItem,
+  Slide,
+  Toolbar,
+  Typography,
+  useScrollTrigger,
+} from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -80,6 +84,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function HideOnScroll(props) {
+  const { children } = props;
+
+  return (
+    <Slide appear={false} direction="down" in={!useScrollTrigger()}>
+      {children}
+    </Slide>
+  );
+}
+
 export default function NavHeader(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -116,8 +130,10 @@ export default function NavHeader(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem> */}
+      <MenuItem onClick={handleMenuClose} component={Link} to="/home/person">
+        个人中心
+      </MenuItem>
     </Menu>
   ) : (
     <Menu
@@ -175,6 +191,7 @@ export default function NavHeader(props) {
         >
           <AccountCircle />
         </IconButton>
+
         <p>Profile</p>
       </MenuItem>
     </Menu>
@@ -182,7 +199,8 @@ export default function NavHeader(props) {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
+      {/* <HideOnScroll {...props}> */}
+      <AppBar>
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
             CYW 在线购物平台
@@ -192,13 +210,16 @@ export default function NavHeader(props) {
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
+              placeholder="搜索..."
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
               inputProps={{ "aria-label": "search" }}
             />
+          </div>
+          <div>
+            <Button variant="contained">高级搜索</Button>
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
@@ -224,6 +245,7 @@ export default function NavHeader(props) {
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
               color="inherit"
+              to="/login"
             >
               <AccountCircle />
             </IconButton>
@@ -241,6 +263,39 @@ export default function NavHeader(props) {
           </div>
         </Toolbar>
       </AppBar>
+      {/* </HideOnScroll> */}
+      <Toolbar />
+      {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <div>
+          <Typography paragraph>Method:</Typography>
+          <Typography paragraph>
+            Heat 1/2 cup of the broth in a pot until simmering, add saffron and
+            set aside for 10 minutes.
+          </Typography>
+          <Typography paragraph>
+            Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet
+            over medium-high heat. Add chicken, shrimp and chorizo, and cook,
+            stirring occasionally until lightly browned, 6 to 8 minutes.
+            Transfer shrimp to a large plate and set aside, leaving chicken and
+            chorizo in the pan. Add pimentón, bay leaves, garlic, tomatoes,
+            onion, salt and pepper, and cook, stirring often until thickened and
+            fragrant, about 10 minutes. Add saffron broth and remaining 4 1/2
+            cups chicken broth; bring to a boil.
+          </Typography>
+          <Typography paragraph>
+            Add rice and stir very gently to distribute. Top with artichokes and
+            peppers, and cook without stirring, until most of the liquid is
+            absorbed, 15 to 18 minutes. Reduce heat to medium-low, add reserved
+            shrimp and mussels, tucking them down into the rice, and cook again
+            without stirring, until mussels have opened and rice is just tender,
+            5 to 7 minutes more. (Discard any mussels that don’t open.)
+          </Typography>
+          <Typography>
+            Set aside off of the heat to let rest for 10 minutes, and then
+            serve.
+          </Typography>
+        </div>
+      </Collapse> */}
       {renderMobileMenu}
       {renderMenu}
     </div>
