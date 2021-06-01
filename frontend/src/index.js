@@ -7,7 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 import { SnackbarProvider } from "notistack";
 
 ReactDOM.render(
-  <SnackbarProvider maxSnack={4}>
+  <SnackbarProvider maxSnack={10}>
     <BrowserRouter>
       <App />
     </BrowserRouter>
