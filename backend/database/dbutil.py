@@ -184,7 +184,13 @@ class Database:
                 #infoStr = infoStr.replace('\'', '').replace('\"', '')
 
                 print(name, price, infoStr, tp, imgpath)
-                CYWDB.insert("Good", [name, price, tp, infoStr, imgpath])
+                self.insert("Good", [name, price, tp, infoStr, imgpath])
+    def load_goods_keyword(self, goodsKeyword = None):
+        assert(goodsKeyword != None)
+        for id, kwrdLst in goodsKeyword:
+            print(id, kwrdLst)
+            for kwrd in kwrdLst:
+                self.insert('KeywordGood', [kwrd, id])
     def insert(self, tableName, valueList):
         table = self.tableDict[tableName]
         command = "INSERT INTO " + table.name + "("
@@ -201,7 +207,7 @@ class Database:
             else:
                 command += str(value) + ","
         command = command[:-1] + ");"
-        print(command)
+        #print(command)
         self.cursor.execute(command)
         self.conn.commit()
     def query(self, tableName, conditionDict, fieldList):
