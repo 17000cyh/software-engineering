@@ -56,6 +56,7 @@ def getPrice(id):
 
 def parseProduct(id):
     html = itemHtml(id)
+    print(html)
     dct = parseItem(html)
     price = getPrice(id)
     dct['price'] = price
@@ -77,6 +78,7 @@ if __name__ == '__main__':
         print('keyword', keyword)
         for page in range(1, 7):
             print('page:', page)
+            print()
 
             for ti in range(5):
                 try:
@@ -87,30 +89,33 @@ if __name__ == '__main__':
                 except:
                     continue
             for id, imgurl in idlst:
+                print(id, imgurl)
                 for ti in range(5):
                     try:
-                        dct = parseProduct(id)
+                        dct = {}
+                        #dct = parseProduct(id)
                         imgpath = "imgs/" + id + ".jpg"
                         getimg("https:" + imgurl, imgpath)
 
+                        dct['id'] = id
                         dct['type'] = keyword
                         dct['imgpath'] = imgpath
                         print('goods_id:', id)
-                        print('\tname:', dct['name'])
-                        print('\tprice:', dct['price'])
-                        print('\tinfo:', dct['info'])
+                        #print('\tname:', dct['name'])
+                        #print('\tprice:', dct['price'])
+                        #print('\tinfo:', dct['info'])
                         print('\ttype:', dct['type'])
                         print('\timgpath', dct['imgpath'])
                         product_List.append(dct)
                         break
                     except:
                         continue
-                time.sleep(random.randint(1, 10))
-
-            time.sleep(random.randint(1, 100))
-
+                print()
+                #time.sleep(random.randint(5, 10))
+            #time.sleep(random.randint(10, 100))
             with codecs.open('productList.json', 'w', encoding='utf-8') as f:
                 json.dump(product_List, f, ensure_ascii=False)
+        #time.sleep(random.randint(600, 3600))
 
     print(len(product_List))
         #insertGoods(dct['name'], dct['price'])
