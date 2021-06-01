@@ -16,6 +16,24 @@ class Table:
         for field in fieldList:
             self.name2field[field.name] = field
 
+def filtV(v):
+    symbolList = ['\'', '#', '/', '*', ' ', '-', '+', ';', ',', '%']
+    maxLen = 500
+    maxNum = 1000000000000000000
+    if type(v) == type("str"):
+        for symbol in symbolList:
+            v = v.replace(symbol, '')
+        if len(v) >= maxLen:
+            v = v[:maxLen]
+        return v
+    elif type(v) == type(1):
+        if v >= maxNum:
+            v = v % maxNum
+        return v
+    else:
+        #print(v)
+        return v
+
 class Database:
     def __init__(self):
         self.tableDict = {
@@ -145,25 +163,28 @@ class Database:
             #print(command)
             self.cursor.execute(command)
             self.conn.commit()
-    def load_goods(self, fileList):
+    def load_goods(self, fileList = ['../jdspider/pL.json']):
         import json
         for dataFile in fileList:
             goodList = json.load(open(dataFile, "r"))
 
             for goodDct in goodList:
                 name = goodDct['name']
-                price = str(goodDct['price'])
+                price = goodDct['price']
                 info = goodDct['info']
+                tp = goodDct['type']
+                imgpath = goodDct['imgpath']
+
                 infoStr = ""
                 for k, v in info.items():
-                    infoStr += k + ":" + v + ','
+                    infoStr += k + "：" + v + '，'
                 infoStr = infoStr[: -1]
 
-                name = name.replace('\'', '').replace('\"', '')
-                infoStr = infoStr.replace('\'', '').replace('\"', '')
+                #name = name.replace('\'', '').replace('\"', '')
+                #infoStr = infoStr.replace('\'', '').replace('\"', '')
 
-                print(name, price, infoStr)
-                CYWDB.insert("Good", [name, price, "type", infoStr, "imgpath"])
+                print(name, price, infoStr, tp, imgpath)
+                CYWDB.insert("Good", [name, price, tp, infoStr, imgpath])
     def insert(self, tableName, valueList):
         table = self.tableDict[tableName]
         command = "INSERT INTO " + table.name + "("
@@ -173,12 +194,14 @@ class Database:
         command = command[:-1]
         command += ")\nVALUES (NULL,"
         for i, value in enumerate(valueList):
+            #filt user provided data
+            value = filtV(value)
             if table.fieldList[i + 1].dataType == "TEXT":
                 command += "\'"  + value + "\',"
             else:
                 command += str(value) + ","
         command = command[:-1] + ");"
-        #print(command)
+        print(command)
         self.cursor.execute(command)
         self.conn.commit()
     def query(self, tableName, conditionDict, fieldList):
@@ -186,6 +209,7 @@ class Database:
         command = "SELECT "
         if len(fieldList) != 0:
             for field in fieldList:
+                field = filtV(field)
                 command += field + ","
             command = command[:-1]
         else:
@@ -195,6 +219,9 @@ class Database:
         if len(conditionDict.items()) != 0:
             command += " WHERE "
             for field, value in conditionDict.items():
+                field = filtV(field)
+                value = filtV(value)
+                
                 command += field + "="
                 if table.name2field[field].dataType == "TEXT":
                     command += "\'" + value + "\'"
@@ -218,6 +245,8 @@ class Database:
         table = self.tableDict[tableName]
         command = "UPDATE " + table.name + " set "
         field, value = modificationPair
+        field = filtV(field)
+        value = filtV(value)
         
         if table.name2field[field].dataType == "TEXT":
             command += field + "=" + "\'" + value + "\'"
@@ -225,6 +254,8 @@ class Database:
             command += field + "=" + str(value)
         command += " WHERE "
         for field, value in conditionDict.items():
+            field = filtV(field)
+            value = filtV(value)
             command += field + "="
             if table.name2field[field].dataType == "TEXT":
                 command += "\'" + value + "\'"
@@ -239,6 +270,8 @@ class Database:
         table = self.tableDict[tableName]
         command = "DELETE FROM " + table.name + " WHERE "
         for field, value in conditionDict.items():
+            field = filtV(field)
+            value = filtV(value)
             command += field + "="
             if table.name2field[field].dataType == "TEXT":
                 command += "\'" + value + "\'"
@@ -253,6 +286,9 @@ class Database:
 CYWDB = Database()
 
 if __name__ == '__main__':
+    CYWDB.build()
+    CYWDB.load_goods()
+   
     '''CYWDB.insert("User", ["wsw", "password",111 11111111,"i am wsw"])
     #CYWDB.remove("User", {"user_name": "wsw"})
     print(CYWDB.query("User", {"user_name": "wsw"}, ["user_info"]))
