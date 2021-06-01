@@ -424,6 +424,34 @@ def get_message_between_two(begin_user,send_user):
         for dct in res
     ]
 
+#检索商品相关
+import sys
+sys.path.append('../search')
+from getKeyword import getKeywordBuild, goodsKeyword
+from input2Keyword import getKeywordList, readWordVec
+def retrieval_goods(text):
+    """
+    输入：搜索的字符串
+    输出：排序后列表，每项是 (weight, id)
+    weight:相关性权重
+    id:商品编号（用于后续获取商品信息）
+    """
+    kwrdPairs = getKeywordList(text)
+    dct = {}
+    for mcos, kwrd in kwrdPairs:
+        res = CYWDB.query('KeywordGood', {'kg_keyword': kwrd}, ['kg_goodid'])
+        for item in res:
+            id = item['kg_goodid']
+            if id not in dct:
+                dct[id] = 0
+            dct[id] += mcos
+    
+    lst = [(dct[id], id) for id in dct.keys()]
+    lst.sort(key=lambda pir: -pir[0])
+    return lst
+
+
+
 if __name__ == '__main__':
     insert_user("a", "password", 1234567, 'a@cyw.com')
     insert_user("b", "password", 1111111, 'b@cyw.com')
