@@ -1,34 +1,34 @@
-import axios from "axios";
-import { getBaseURL } from "../static/config";
+import { commonPost } from "./common";
 
 export function fetchArticles(userId) {
-  let articles = [];
-  let hasMore = false;
-  axios.defaults.baseURL = getBaseURL();
-  axios
-    .post("/articles", {
-      userId: userId,
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .then((response) => {
-      articles = response.data.article_list;
-      hasMore = response.data.hasMore;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  // let articles = [];
+
+  // let hasMore = false;
+  // axios.defaults.baseURL = getBaseURL();
+  let data = {};
+  data = commonPost("/articles", {
+    userId: userId,
+  });
+  // .catch((err) => {
+  //   console.log(err);
+  // })
+  // .then((response) => {
+  //   articles = response.data.article_list;
+  //   hasMore = response.data.hasMore;
+  // })
+  // .catch((err) => {
+  //   console.log(err);
+  // });
   return {
-    hasMore: hasMore,
-    articles: articles,
+    hasMore: data.hasMore || false,
+    articles: data.article_list || [],
   };
 }
 
 export function fetchFakeArticles() {
   let articles = [];
-  let hasMore = false;
-  hasMore = true;
+  // let hasMore = false;
+  // hasMore = true;
   articles = [
     {
       article_name: "Some Article Name",
