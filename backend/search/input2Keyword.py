@@ -1,10 +1,10 @@
 import jieba
-from getKeyword import cutWord, keyWrdLst
+from getKeyword import cutWord, keyWrdLst, getKeywordBuild
 import numpy as np
 import codecs
 
 wvdct = {}
-def readWordVec(fileName='wrdvec.txt'):
+def readWordVec(fileName='../search/wrdvec.txt'):
     with codecs.open(fileName, 'r', encoding='utf-8') as f:
         n, d = map(int, f.readline(-1).strip().split(' '))
         print(n, d)
@@ -15,7 +15,6 @@ def readWordVec(fileName='wrdvec.txt'):
             wrd = itms[0]
             vec = np.array(list(map(float, itms[1:])))
             wvdct[wrd] = vec
-readWordVec()
 
 def getKeyword(wrd):
     # get the most similiar keyword 
