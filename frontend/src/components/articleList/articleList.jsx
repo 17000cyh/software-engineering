@@ -6,30 +6,19 @@ import InfiniteScroll from "react-infinite-scroller";
 
 class ArticleList extends Component {
   state = { hasMoreItems: true, items: [] };
-  loadItems(page) {
+  loadItems = async (page) => {
     let self = this;
-    let response;
-    switch (this.props.data) {
-      case "follow":
-        response = fetchFakeArticles();
-        break;
-      case "hot":
-        response = fetchArticles();
-        break;
+    const response = await fetchArticles(1, this.props.data);
 
-      default:
-        // Recommend
-        response = fetchArticles();
-        break;
-    }
-    // const response = fetchFakeArticles();
+    console.log("res", response);
     const hasMore = response.hasMore;
     const newItems = response.articles;
     self.setState({
       hasMoreItems: hasMore,
-      items: [...this.state.items, ...newItems],
+      items: this.state.items.concat(newItems),
     });
-  }
+    console.log(this.state.items);
+  };
   render() {
     const loader = <div className="loader">Loading ...</div>;
     return (
@@ -45,6 +34,7 @@ class ArticleList extends Component {
               <ArticleItem
                 title={article.article_name}
                 content={article.article_content}
+                targetId={article.id}
               />
             </Grid>
           ))}

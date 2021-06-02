@@ -9,10 +9,10 @@ const HomePage = (props) => {
   return (
     <React.Fragment>
       <Grid container spacing={3} direction="column">
-        <NavHeader login={true} />
+        {/* <NavHeader login={false} /> */}
         <Switch>
           <Route path="/home/person" render={() => <PersonalContent />} />
-          <Route path="/" render={() => <MainContent />} />
+          <Route path="/home/" render={() => <MainContent />} />
         </Switch>
         {/* <MainContent /> */}
       </Grid>

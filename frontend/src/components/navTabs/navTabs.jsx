@@ -71,12 +71,21 @@ export default function NavTabs(props) {
   return (
     <div className={classes.root}>
       <div className={classes.demo1}>
-        <AntTabs value={value} onChange={handleChange} aria-label="ant example">
+        <AntTabs
+          value={value}
+          onChange={handleChange}
+          aria-label="ant example"
+          centered
+        >
           {props.tabs.map((tab) => (
-            <AntTab label={tab.label} component={Link} to={tab.to} />
+            <AntTab
+              label={tab.label}
+              key={Math.random() + tab.label}
+              component={Link}
+              to={tab.to}
+            />
           ))}
         </AntTabs>
-        {/* <Typography className={classes.padding} /> */}
       </div>
     </div>
   );

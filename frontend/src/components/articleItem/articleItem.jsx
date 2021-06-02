@@ -12,6 +12,8 @@ import { red } from "@material-ui/core/colors";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { Comment } from "@material-ui/icons";
+import CommentList from "../commentList/commentList";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,19 +48,7 @@ export default function ArticleItem(props) {
 
   return (
     <Card className={classes.root}>
-      <CardHeader
-        // avatar={
-        //   <Avatar aria-label="recipe" className={classes.avatar}>
-        //     R
-        //   </Avatar>
-        // }
-        // action={
-        //   <IconButton aria-label="settings">
-        //     <MoreVertIcon />
-        //   </IconButton>
-        // }
-        title={props.title}
-      />
+      <CardHeader title={props.title} />
 
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
@@ -72,6 +62,9 @@ export default function ArticleItem(props) {
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
+        {/* <IconButton aria-label="comment">
+          <Comment />
+        </IconButton> */}
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded,
@@ -80,11 +73,11 @@ export default function ArticleItem(props) {
           aria-expanded={expanded}
           aria-label="show more"
         >
-          <ExpandMoreIcon />
+          <Comment />
         </IconButton>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>{props.content}</CardContent>
+        <CardContent>{<CommentList targetId={props.targetId} />}</CardContent>
       </Collapse>
     </Card>
   );
