@@ -337,7 +337,7 @@ def insert_reply(user_id, target_id, target_type, content, time):
         assert(len(res) == 1)
         receiver = res[0]['cm_publisherid']
     elif target_type == 'Reply':
-        res = CYWDb.query('Reply', {'rp_id': target_id}, ['rp_senderid'])
+        res = CYWDB.query('Reply', {'rp_id': target_id}, ['rp_senderid'])
         assert(len(res) == 1)
         receiver = res[0]['rp_senderid']
 
@@ -360,14 +360,14 @@ def insert_likes(user_id, target_id, target_type):
         assert(len(res) == 1)
         receiver = res[0]['cm_publisherid']
     elif target_type == 'Reply':
-        res = CYWDb.query('Reply', {'rp_id': target_id}, ['rp_senderid'])
+        res = CYWDB.query('Reply', {'rp_id': target_id}, ['rp_senderid'])
         assert(len(res) == 1)
         receiver = res[0]['rp_senderid']
     elif target_type == 'Article':
-        res = CYWDb.query('Article', {'ar_id': target_id}, ['ar_publisherid'])
+        res = CYWDB.query('Article', {'ar_id': target_id}, ['ar_publisherid'])
         assert(len(res) == 1)
         receiver = res[0]['ar_publisherid']
-    CYWDB.insert('Likes', [user_id, target_user_id, target_type])
+    CYWDB.insert('Likes', [user_id, target_id, target_type])
     res = CYWDB.query('Likes', 
             {'lk_senderid': user_id, 
             'lk_targetid': target_id, 
@@ -389,7 +389,7 @@ def insert_comment(user_id, target_id, target_type, content, time):
     assert(target_type == 'Good' or target_type == 'Article')
 
     if target_type == 'Article':
-        res = CYWDb.query('Article', {'ar_id': article_id}, ['ar_publisherid'])
+        res = CYWDB.query('Article', {'ar_id': target_id}, ['ar_publisherid'])
         assert(len(res) == 1)
         receiver = res[0]['ar_publisherid']
         article_id = target_id

@@ -132,14 +132,33 @@ class TestDBAPI(unittest.TestCase):
         CYWDB.build()
         insert_user("b", "passwordb", 1111111, 'b@cyw.com')
 
+        for i in range(0, 100):
+            insert_article(1, 'article' + str(i), str(i), [])
+        for i in range(0, 55):
+            insert_comment(1, i + 1, 'Article', 'comment' + str(i), i)
+        for i in range(0, 52):
+            insert_reply(1, i + 1, 'Comment', 'reply1' + str(i), i - 100)
+        
+
         for i in range(2, 52):
             insert_user('User' + str(i), 'pswd', 1, 'mail')
-            insert_likes(i, 1)
-            insert_message(i, 1, '', 3 * i + 1)
-            insert_reply(i, 1, '', 3 * i + 2)
+            insert_likes(i, i, 'Article')
+            insert_likes(i, i, 'Comment')
+            insert_likes(i, i, 'Reply')
 
-        #print(get_tips(1))
-        #print(get_tips(1))
+            insert_message(i, 1, '', 3 * i + 1)
+            
+            insert_reply(i, i, 'Comment','' , 3 * i + 2)
+            insert_reply(i, i, 'Reply','' , 3 * i + 2 + 100)
+
+        dct0 = get_tips(1)
+        self.assertTrue(dct0['likes'])
+        self.assertTrue(dct0['reply'])
+        self.assertTrue(dct0['message'])
+        dct1 = get_tips(1)
+        self.assertFalse(dct1['likes'])
+        self.assertFalse(dct1['reply'])
+        self.assertFalse(dct1['message'])
     
     def test_insert_message_get_communication(self):
         CYWDB.connect()
