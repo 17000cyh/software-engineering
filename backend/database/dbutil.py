@@ -75,6 +75,7 @@ class Database:
                                 Field("aca_articleid", False, "INTEGER", False, foreignKey="Good"),
                                 Field("aca_time", False, "INTEGER", False),
                             ]),
+
             "Message" :   Table("MessageList", [
                                 Field("ms_id", True, "INTEGER", False),
                                 Field("ms_senderid", False, "TNTEGER", False, foreignKey="User"),
@@ -84,21 +85,50 @@ class Database:
                             ]),
             "UnreadMessage" :   Table("UnreadMessageList", [
                                 Field("ums_id", True, "INTEGER", False),
-                                Field("ums_senderid", False, "TNTEGER", False, foreignKey="User"),
-                                Field("ums_receiverid", False, "INTEGER", False, foreignKey="User"),
-                                Field("ums_msid", False, "INTEGER", False, foreignKey="Message")
+                                Field("ums_msid", False, "INTEGER", False, foreignKey="Message"),
+                                Field("ums_receiverid", False, "INTEGER", False, foreignKey="User")
+                            ]),
+            
+            "Likes" :   Table("LikesList", [
+                                Field("lk_id", True, "INTEGER", False),
+                                Field("lk_senderid", False, "TNTEGER", False, foreignKey="User"),
+                                Field("lk_targetid", False, "INTEGER", False),
+                                Field("lk_type", False, "TEXT", False),      #= Comment Reply Article
                             ]),
             "UnreadLikes" :   Table("UnreadLikesList", [
                                 Field("ulk_id", True, "INTEGER", False),
-                                Field("ulk_senderid", False, "TNTEGER", False, foreignKey="User"),
+                                Field("ulk_lkid", False, "INTEGER", False, foreignKey="Likes"),
                                 Field("ulk_receiverid", False, "INTEGER", False, foreignKey="User")
                             ]),
-            "UnreadReply" :   Table("UnreadReplyList", [
-                                Field("ure_id", True, "INTEGER", False),
-                                Field("ure_senderid", False, "TNTEGER", False, foreignKey="User"),
-                                Field("ure_receiverid", False, "INTEGER", False, foreignKey="User"),
-                                Field("ure_msid", False, "INTEGER", False, foreignKey="Message")
+
+            "Reply" :   Table("ReplyList", [
+                                Field("rp_id", True, "INTEGER", False),
+                                Field("rp_senderid", False, "TNTEGER", False, foreignKey="User"),
+                                Field("rp_targetid", False, "INTEGER", False),
+                                Field("rp_type", False, "TEXT", False),     #= Comment Reply
+                                Field("rp_content", False, "TEXT", False),
+                                Field("rp_time", False, "INTEGER", False)
                             ]),
+            "UnreadReply" :   Table("UnreadReplyList", [
+                                Field("urp_id", True, "INTEGER", False),
+                                Field("urp_rpid", False, "INTEGER", False, foreignKey="Reply"),
+                                Field("urp_receiverid", False, "INTEGER", False, foreignKey="User")
+                            ]),                
+
+            "Comment" :    Table("CommentList", [
+                                Field("cm_id", True, "INTEGER", False),
+                                Field("cm_articleid", False, "TNTEGER", False, foreignKey="Article"),
+                                Field("cm_goodid", False, "TNTEGER", False, foreignKey="Good"),
+                                Field("cm_publisherid", False, "TNTEGER", False, foreignKey="User"),
+                                Field("cm_content", False, "TEXT", False),
+                                Field("cm_time", False, "TNTEGER", False),
+                            ]),
+            "UnreadComment" :   Table("UnreadCommentList", [
+                                Field("ucm_id", True, "INTEGER", False),
+                                Field("ucm_cmid", False, "INTEGER", False, foreignKey="Comment"),
+                                Field("ucm_receiverid", False, "INTEGER", False, foreignKey="User")
+                            ]),     
+            
 
             "Good" :      Table("GoodList", [
                                 Field("good_id", True, "INTEGER", False),
@@ -118,12 +148,6 @@ class Database:
                                 Field("ar_publisherid", False, "TNTEGER", False, foreignKey="User"),
                                 Field("ar_name", False, "TEXT", False),
                                 Field("ar_content", False, "TEXT", False),
-                            ]),
-            "Comment" :    Table("CommentList", [
-                                Field("cm_id", True, "INTEGER", False),
-                                Field("cm_articleid", False, "TNTEGER", False, foreignKey="Article"),
-                                Field("cm_publisherid", False, "TNTEGER", False, foreignKey="User"),
-                                Field("cm_content", False, "TEXT", False),
                             ]),
             "ArticleGood" : Table("ArticleGoodList", [
                                 Field("ag_id", True, "INTEGER", False),
