@@ -10,6 +10,7 @@ import time
 
 app = Flask(__name__)
 
+import jwt
 
 @app.route('/')
 def hello_world():
@@ -39,6 +40,14 @@ def register():
 
     infor['regist_success'] = True
     infor['wrong_code'] = 1
+
+    payload = {
+        'username':username,
+        'password':password,
+    }
+
+    token = jwt.encode(payload,'1628007',algorithm='HS256')
+    infor['token'] = token
 
     return jsonify(infor)
 
