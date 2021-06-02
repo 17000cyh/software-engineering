@@ -1,27 +1,7 @@
 import { commonPost } from "./common";
 
-export function tryLogin(mail, password) {
-  // let status = false;
-  // let code = -1;
-  // let user_id = -1;
-  // axios.defaults.baseURL = getBaseURL();
-  // axios
-  //   .post("/login", {
-  //     mail: mail,
-  //     password: password,
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   })
-  //   .then((response) => {
-  //     status = response.data.sign_in_success;
-  //     code = response.data.wrong_code;
-  //     user_id = response.data.user_id;
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
-  const data = commonPost("/login", {
+export async function tryLogin(mail, password) {
+  const data = await commonPost("/login", {
     mail: mail,
     password: password,
   });
@@ -33,24 +13,13 @@ export function tryLogin(mail, password) {
   };
 }
 
-export function trySignup(phone_number, mail, user_name, password) {
-  // let status = false;
-  // let code = -1;
-  const data = commonPost("/registry", {
+export async function trySignup(phone_number, mail, user_name, password) {
+  const data = await commonPost("/registry", {
     phone_number: phone_number,
     mail: mail,
     user_name: user_name,
     password: password,
   });
-  // .catch((err) => {
-  //   console.log(err);
-  // })
-  // .then((response) => {
-  //   status = response.data.regist_success;
-  //   code = response.data.wrong_code;
-  // })
-  // .catch((err) => {
-  //   console.log(err);
-  // });
+
   return { status: data.regist_success || false, code: data.wrong_code || -1 };
 }

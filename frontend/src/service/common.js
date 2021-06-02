@@ -1,20 +1,17 @@
 import axios from "axios";
 import { getBaseURL } from "../static/config";
+import Qs from "qs";
 
 axios.defaults.baseURL = getBaseURL();
+// axios.defaults.headers.post["Content-Type"] =
+//   "application/x-www-form-urlencoded";
+export async function commonPost(url, load) {
+  // let data = {};
+  console.log(load);
 
-export function commonPost(url, load) {
-  let data = {};
-  axios
-    .post(url, load)
-    .catch((err) => {
-      console.log(err);
-    })
-    .then((response) => {
-      data = response.data;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  return data;
+  const res = await axios.post(url, load).catch((err) => {
+    console.log(err);
+  });
+
+  return res.data;
 }

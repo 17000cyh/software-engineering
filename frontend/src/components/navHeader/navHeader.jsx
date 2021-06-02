@@ -129,9 +129,19 @@ export default function NavHeader(props) {
     <div className={classes.grow}>
       <AppBar>
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
+          {/* <Link to="/" style={{ textDecoration: "None" }}> */}
+          <Typography
+            className={classes.title}
+            variant="h6"
+            noWrap
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              window.location = "/";
+            }}
+          >
             CYW 在线购物平台
           </Typography>
+          {/* </Link> */}
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />

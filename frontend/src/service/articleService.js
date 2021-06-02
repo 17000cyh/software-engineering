@@ -1,34 +1,42 @@
 import { commonPost } from "./common";
 
-export function fetchArticles(userId) {
-  // let articles = [];
-
-  // let hasMore = false;
-  // axios.defaults.baseURL = getBaseURL();
+export async function fetchArticles(userId, method) {
   let data = {};
-  data = commonPost("/articles", {
-    userId: userId,
-  });
-  // .catch((err) => {
-  //   console.log(err);
-  // })
-  // .then((response) => {
-  //   articles = response.data.article_list;
-  //   hasMore = response.data.hasMore;
-  // })
-  // .catch((err) => {
-  //   console.log(err);
-  // });
+  switch (method) {
+    case "follow":
+      data = await commonPost("/follow", {
+        user_id: userId,
+      });
+      break;
+    case "hot":
+      data = await commonPost("/hot", {
+        user_id: userId,
+      });
+      break;
+    default:
+      data = await commonPost("/index", {
+        user_id: userId,
+      });
+      break;
+  }
+
   return {
     hasMore: data.hasMore || false,
     articles: data.article_list || [],
   };
 }
 
+export async function fetchComments(targetId) {
+  const data = await commonPost("/get_comment", {
+    target_id: targetId,
+  });
+  console.log(data.comment_infor);
+  return data.comment_infor;
+}
+
 export function fetchFakeArticles() {
   let articles = [];
-  // let hasMore = false;
-  // hasMore = true;
+
   articles = [
     {
       article_name: "Some Article Name",
