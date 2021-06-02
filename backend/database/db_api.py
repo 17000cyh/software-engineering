@@ -9,6 +9,8 @@ def register_check_phone_existence(phone_number):
     :return:is_phone_number_existence,bool
     """
 
+    if type(phone_number) != type(1):
+        return False
     res = CYWDB.query('User', {"user_phonenumber": phone_number}, ["user_name"])
     return len(res) != 0
 
@@ -18,7 +20,8 @@ def register_check_mail_existence(mail):
     :param phone_number:
     :return:is_phone_number_existence,bool
     """
-
+    if type(mail) != type('str'):
+        return False
     res = CYWDB.query('User', {"user_email": mail}, ["user_name"])
     return len(res) != 0
 
@@ -108,6 +111,7 @@ def get_random_ten_good():
     res = CYWDB.query('Good', {}, ["good_id"])
     goodIdList = [dct["good_id"] for dct in res]
 
+    assert(len(goodIdList) >= 10)
     choosedId = np.random.choice(goodIdList, 10, replace = False)
     returnList = []
     for i in range(choosedId.shape[0]):
