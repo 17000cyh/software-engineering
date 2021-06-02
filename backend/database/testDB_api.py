@@ -13,6 +13,8 @@ class TestDBAPI(unittest.TestCase):
         self.assertTrue(register_check_phone_existence(1234567))
         self.assertTrue(register_check_phone_existence(1111111))
         self.assertFalse(register_check_phone_existence(1111112))
+        self.assertFalse(register_check_phone_existence(10 ** 100))
+        self.assertFalse(register_check_phone_existence('sdfsdaf'))
 
     def test_insert_user_check_mail(self):
         CYWDB.connect()
@@ -24,6 +26,10 @@ class TestDBAPI(unittest.TestCase):
         self.assertTrue(register_check_mail_existence("a@cyw.com"))
         self.assertTrue(register_check_mail_existence("b@cyw.com"))
         self.assertFalse(register_check_mail_existence("c@cyw.com"))
+        
+        longstr = ''.join(['a' for i in range(10 ** 8)])
+        self.assertFalse(register_check_mail_existence(longstr))
+        self.assertFalse(register_check_mail_existence(123456))
 
     def test_insert_user_check_password(self):
         CYWDB.connect()
@@ -36,7 +42,10 @@ class TestDBAPI(unittest.TestCase):
         self.assertTrue(load_password_right("b@cyw.com", "passwordb"))
         self.assertFalse(load_password_right("a@cyw.com", "passwordc"))
         self.assertFalse(load_password_right("c@cyw.com", "passworda"))
-    
+        
+        longstr = ''.join(['a' for i in range(10 ** 8)])
+        self.assertFalse(load_password_right("a@cyw.com", longstr))
+
     def test_insert_user_get_baseinfo(self):
         CYWDB.connect()
         CYWDB.build()
