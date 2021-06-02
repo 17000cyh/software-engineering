@@ -185,8 +185,33 @@ def get_like_list():
     like_list = get_like(user_id)
     return jsonify({'like_list':like_list})
 
+@app.route('/get_reply')
+def get_reply_list():
+    data = json.loads(request.form.get('data'))
+    user_id = data['user_id']
+    reply_list = get_reply_list(user_id)
+    return jsonify({'reply_list':reply_list})
 
+@app.route('/user_collection')
+def get_collection():
+    data = json.loads(request.form.get('data'))
+    user_id = data['user_id']
+    collection_list = get_collection(user_id)
+    return jsonify({'collection_list':collection_list})
 
+@app.route('/user_history')
+def get_history():
+    data = json.loads(request.form.get('data'))
+    user_id = data['user_id']
+    history_list = get_history_list(user_id)
+    return jsonify({'collection_list': history_list})
+
+@app.route('/get_comment')
+def get_comment():
+    data = json.loads(request.form.get('data'))
+    target_id = data['target_id']
+    comment_infor = get_comment_infor(target_id)
+    return jsonify({'comment_infor':comment_infor})
 
 
 
