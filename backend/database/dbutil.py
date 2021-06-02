@@ -216,6 +216,7 @@ class Database:
             for kwrd in kwrdLst:
                 self.insert('KeywordGood', [kwrd, id])
     def insert(self, tableName, valueList):
+        assert(type(valueList) == type([]))
         table = self.tableDict[tableName]
         command = "INSERT INTO " + table.name + "("
         
@@ -235,6 +236,8 @@ class Database:
         self.cursor.execute(command)
         self.conn.commit()
     def query(self, tableName, conditionDict, fieldList):
+        assert(type(conditionDict) == type({}))
+        assert(type(fieldList) == type([]))
         table = self.tableDict[tableName]
         command = "SELECT "
         if len(fieldList) != 0:
@@ -272,6 +275,7 @@ class Database:
             res.append(dct)
         return res
     def modify(self, tableName, conditionDict, modificationPair):
+        assert(type(conditionDict) == type({}))
         table = self.tableDict[tableName]
         command = "UPDATE " + table.name + " set "
         field, value = modificationPair
@@ -297,6 +301,7 @@ class Database:
         self.cursor.execute(command)
         self.conn.commit()
     def remove(self, tableName, conditionDict):
+        assert(type(conditionDict) == type({}))
         table = self.tableDict[tableName]
         command = "DELETE FROM " + table.name + " WHERE "
         for field, value in conditionDict.items():
