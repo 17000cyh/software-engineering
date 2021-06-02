@@ -5,19 +5,36 @@ import LoginPage from "./pages/loginPage/loginPage";
 import SignupPage from "./pages/signupPage/signupPage";
 import NotFoundPage from "./pages/notFoundPage/notFoundPage";
 
-function App() {
-  return (
-    <div className="App">
-      <Switch>
-        <Route path="/login" component={LoginPage} />
-        <Route path="/signup" component={SignupPage} />
-        <Route path="/home" component={HomePage} />
-        <Route path="/not-found" component={NotFoundPage} />
-        <Route path="/" component={HomePage} />
-        {/* <Redirect to="/not-found" /> */}
-      </Switch>
-    </div>
-  );
+import React, { Component } from "react";
+import jwtDecode from "jwt-decode";
+import NavHeader from "./components/navHeader/navHeader";
+import Logout from "./components/logout/logout";
+
+class App extends Component {
+  state = {};
+  componentDidMount() {
+    try {
+      const jwt = localStorage.getItem("token");
+      const user = jwtDecode(jwt);
+      this.setState({ user });
+    } catch (error) {}
+  }
+  render() {
+    return (
+      <div className="App">
+        <NavHeader user={this.state.user} />
+        <Switch>
+          <Route path="/login" component={LoginPage} />
+          <Route path="/signup" component={SignupPage} />
+          <Route path="/home" component={HomePage} />
+          <Route path="/logout" component={Logout} />
+          <Route path="/not-found" component={NotFoundPage} />
+          <Redirect path="/" exact to="/home" />
+          <Redirect to="/not-found" />
+        </Switch>
+      </div>
+    );
+  }
 }
 
 export default App;

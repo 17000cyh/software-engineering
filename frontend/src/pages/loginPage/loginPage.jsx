@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LoginPage() {
+export default function LoginPage(props) {
   const classes = useStyles();
   let user = {
     email: "",
@@ -61,6 +61,8 @@ export default function LoginPage() {
       }
     } else {
       enqueueSnackbar("登录成功", { variant: "success" });
+      localStorage.setItem("token", res.jwt);
+      window.location = "/";
     }
   };
 

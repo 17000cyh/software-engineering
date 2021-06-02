@@ -1,12 +1,10 @@
-import axios from "axios";
-import { getBaseURL } from "../static/config";
 import { commonPost } from "./common";
 
 export function tryLogin(mail, password) {
   // let status = false;
   // let code = -1;
   // let user_id = -1;
-  axios.defaults.baseURL = getBaseURL();
+  // axios.defaults.baseURL = getBaseURL();
   // axios
   //   .post("/login", {
   //     mail: mail,
@@ -31,6 +29,7 @@ export function tryLogin(mail, password) {
     status: data.sign_in_success || false,
     code: data.wrong_code || -1,
     id: data.user_id || -1,
+    jwt: data.jwt || -1,
   };
 }
 
