@@ -1,6 +1,6 @@
 import jieba
 import json
-
+import numpy as np
 
 def load_data(fileList):
     goods = []
@@ -19,8 +19,8 @@ def load_data(fileList):
     return goods
 
 uselessWord = {'，', ':', '(', ')', ' ', '>', '-', '（', '）', '/', '；', '+', '~'}
-def cutWord(infoStr):
-    words = jieba.cut(infoStr, cut_all=True)
+def cutWord(infoStr, cut_all = False):
+    words = jieba.cut(infoStr, cut_all=cut_all)
     words = [x for x in words if x not in uselessWord]
     return words
 
@@ -29,11 +29,20 @@ def getWordDct(goods):
     for id, goodInfo in goods:
         #print(goodInfo)
         dct = {}
-        for wrd in cutWord(goodInfo):
-            dct[wrd] = 0
-        goodsWrdDct.append([id, list(dct.keys())])
-    #for x in goodsWrdDct:
-    #    print(x)
+        wrds = cutWord(goodInfo)
+        for wrd in wrds:
+            if wrd in dct:
+                dct[wrd] += 1
+            else:
+                dct[wrd] = 1
+        
+        n_wrds = len(wrds)
+        for wrd in dct.keys():
+            dct[wrd] /= n_wrds
+        
+        goodsWrdDct.append([id, dct])
+    
+    #TF for good word pair
     return goodsWrdDct
 
 def getKeyword(goodsWrdDct):
@@ -44,22 +53,32 @@ def getKeyword(goodsWrdDct):
                 wordcnt[wrd] = 0
             else: 
                 wordcnt[wrd] += 1
-    
+    num_goods = len(goodsWrdDct)
+
+    idfs = {}
+    for wrd in wordcnt.keys():
+        idfs[wrd] = np.log(num_goods / (wordcnt[wrd] + 1)) / np.log(10.0)
+
+    keyWrdLst = {}
+    min_tf_idf = 0.01
     min_occur = 10
-    max_occur = len(goodsWrdDct) / 10
-    goodsKeyword = []
+    max_occur = len(goodsWrdDct) / 5
     for id, wrdlst in goodsWrdDct:
-        wrds = [wrd for wrd in wrdlst 
-                    if wordcnt[wrd] > min_occur 
-                        and wordcnt[wrd] < max_occur 
-                        and len(wrd) >= 2]
-        #print(id, wrds)
-        goodsKeyword.append([id, wrds])
-    keyWrdLst = [wrd for wrd in wordcnt.keys()
-                        if wordcnt[wrd] > min_occur 
-                            and wordcnt[wrd] < max_occur 
-                            and len(wrd) >= 2]
-    return goodsKeyword, keyWrdLst
+        #print(id)
+        for wrd in wrdlst.keys():
+            wrdlst[wrd] *= idfs[wrd]
+        eraseWrds = []
+        for wrd, tfidf in wrdlst.items():
+            if tfidf >= min_tf_idf  and wordcnt[wrd] > min_occur and wordcnt[wrd] < max_occur:
+                keyWrdLst[wrd] = 0
+                #print('\t', wrd, tfidf)
+            else:
+                eraseWrds.append(wrd)
+        for wrd in eraseWrds:
+            wrdlst.pop(wrd)
+    keyWrdLst = list(keyWrdLst.keys())
+
+    return goodsWrdDct, keyWrdLst
 
 goodsKeyword = None
 keyWrdLst = None
