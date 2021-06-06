@@ -40,7 +40,7 @@ def getKeyword(wrd):
         return mcos, rkwrd
 
 def getKeywordList(text):
-    wrds = cutWord(text)
+    wrds = cutWord(text, True)
     rtLst = []
     for wrd in wrds:
         mv, kwrd = getKeyword(wrd)
