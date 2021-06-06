@@ -749,12 +749,12 @@ def retrieval_goods(text):
     kwrdPairs = getKeywordList(text)
     dct = {}
     for mcos, kwrd in kwrdPairs:
-        res = CYWDB.query('KeywordGood', {'kg_keyword': kwrd}, ['kg_goodid'])
+        res = CYWDB.query('KeywordGood', {'kg_keyword': kwrd}, ['kg_goodid', 'kg_weight'])
         for item in res:
             id = item['kg_goodid']
             if id not in dct:
                 dct[id] = 0
-            dct[id] += mcos
+            dct[id] += mcos * item['kg_weight']
     
     lst = [(dct[id], id) for id in dct.keys()]
     lst.sort(key=lambda pir: -pir[0])

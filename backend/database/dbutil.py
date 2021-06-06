@@ -142,6 +142,7 @@ class Database:
                                 Field("kg_id", True, "INTEGER", False),
                                 Field("kg_keyword", False, "TEXT", False),
                                 Field("kg_goodid", False, "INTEGER", False, foreignKey="Good"),
+                                Field("kg_weight", False, "REAL", False),
                             ]),
             "Article" :    Table("ArticleList", [
                                 Field("ar_id", True, "INTEGER", False),
@@ -213,8 +214,8 @@ class Database:
         assert(goodsKeyword != None)
         for id, kwrdLst in goodsKeyword:
             print(id, kwrdLst)
-            for kwrd in kwrdLst:
-                self.insert('KeywordGood', [kwrd, id])
+            for kwrd, weight in kwrdLst.items():
+                self.insert('KeywordGood', [kwrd, id, weight])
     def insert(self, tableName, valueList):
         assert(type(valueList) == type([]))
         table = self.tableDict[tableName]
