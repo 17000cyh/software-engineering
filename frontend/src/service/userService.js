@@ -6,10 +6,9 @@ export async function tryLogin(mail, password) {
     password: password,
   });
   return {
-    status: data.sign_in_success || false,
-    code: data.wrong_code || -1,
-    id: data.user_id || -1,
-    jwt: data.jwt || -1,
+    status: data && data.sign_in_success,
+    code: data && data.wrong_code,
+    id: data && data.user_id,
   };
 }
 
@@ -21,5 +20,5 @@ export async function trySignup(phone_number, mail, user_name, password) {
     password: password,
   });
 
-  return { status: data.regist_success || false, code: data.wrong_code || -1 };
+  return { status: data && data.regist_success, code: data && data.wrong_code };
 }

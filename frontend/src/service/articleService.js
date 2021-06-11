@@ -21,8 +21,8 @@ export async function fetchArticles(userId, method) {
   }
 
   return {
-    hasMore: data.hasMore || false,
-    articles: data.article_list || [],
+    hasMore: data && data.hasMore,
+    articles: data && data.article_list,
   };
 }
 

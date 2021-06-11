@@ -29,15 +29,18 @@ class ArticleList extends Component {
         loader={loader}
       >
         <Grid className="articles" container spacing={3} direction="column">
-          {this.state.items.map((article) => (
-            <Grid item key={Math.random() + article.article_name}>
-              <ArticleItem
-                title={article.article_name}
-                content={article.article_content}
-                targetId={article.id}
-              />
-            </Grid>
-          ))}
+          {this.state.items.map(
+            (article) =>
+              article && (
+                <Grid item key={Math.random() + article.name}>
+                  <ArticleItem
+                    title={article.name}
+                    content={article.content}
+                    targetId={article.id}
+                  />
+                </Grid>
+              )
+          )}
         </Grid>
       </InfiniteScroll>
     );

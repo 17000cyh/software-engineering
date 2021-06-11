@@ -12,7 +12,10 @@ const HomePage = (props) => {
         {/* <NavHeader login={false} /> */}
         <Switch>
           <Route path="/home/person" render={() => <PersonalContent />} />
-          <Route path="/home/" render={() => <MainContent />} />
+          <Route
+            path="/home/"
+            render={() => <MainContent user={props.user} />}
+          />
         </Switch>
         {/* <MainContent /> */}
       </Grid>

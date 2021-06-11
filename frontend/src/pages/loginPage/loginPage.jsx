@@ -61,7 +61,7 @@ export default function LoginPage(props) {
       }
     } else {
       enqueueSnackbar("登录成功", { variant: "success" });
-      localStorage.setItem("token", res.jwt);
+      localStorage.setItem("token", res.id);
       window.location = "/";
     }
   };

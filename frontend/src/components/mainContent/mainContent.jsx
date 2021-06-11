@@ -22,20 +22,31 @@ const useStyles = makeStyles((theme) => ({
 
 const MainContent = (props) => {
   const classes = useStyles();
-  const tabs = [
-    {
-      label: "推荐",
-      to: "/home/recommend",
-    },
-    {
-      label: "关注",
-      to: "/home/follow",
-    },
-    {
-      label: "热榜",
-      to: "/home/hot",
-    },
-  ];
+  const tabs = props.user
+    ? [
+        {
+          label: "推荐",
+          to: "/home/recommend",
+        },
+        {
+          label: "关注",
+          to: "/home/follow",
+        },
+        {
+          label: "热榜",
+          to: "/home/hot",
+        },
+      ]
+    : [
+        {
+          label: "推荐",
+          to: "/home/recommend",
+        },
+        {
+          label: "热榜",
+          to: "/home/hot",
+        },
+      ];
   return (
     <Grid item>
       <Grid container spacing={3} direction="row">

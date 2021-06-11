@@ -11,7 +11,7 @@ export async function commonPost(url, load) {
 
   const res = await axios.post(url, load).catch((err) => {
     console.log(err);
+    return null;
   });
-
-  return res.data;
+  return res && res.data;
 }
