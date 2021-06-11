@@ -92,6 +92,7 @@ export default function NavHeader(props) {
   };
 
   const menuId = "primary-search-account-menu";
+  console.log("user", props.user);
   const renderMenu = props.user ? (
     <Menu
       anchorEl={anchorEl}

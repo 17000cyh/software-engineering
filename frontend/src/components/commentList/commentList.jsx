@@ -1,6 +1,7 @@
 import { List, ListItem, ListItemText } from "@material-ui/core";
 import React, { Component } from "react";
 import { fetchComments } from "../../service/articleService";
+import CommentItem from "./commentItem";
 class CommentList extends Component {
   state = { comments: [] };
   async componentDidMount() {
@@ -13,7 +14,10 @@ class CommentList extends Component {
       <List>
         {this.state.comments.map((comment) => (
           <ListItem key={Math.random() + comment.content} divider>
-            <ListItemText>{comment.content}</ListItemText>
+            {/* <ListItemText> */}
+
+            <CommentItem comment={comment} />
+            {/* </ListItemText> */}
           </ListItem>
         ))}
       </List>

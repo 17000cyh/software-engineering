@@ -1,19 +1,12 @@
 import axios from "axios";
 import { getBaseURL } from "../static/config";
+import { commonPost } from "./common";
 
 axios.defaults.baseURL = getBaseURL();
 
-export function fetchLike(params) {
-  let data;
-  axios
-    .post("/like", {
-      userId: userId,
-    })
-    .then((response) => {
-      data = response.data;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  return data;
+export async function fetchReplyList(userId) {
+  const data = await commonPost("/get_reply", {
+    user_id: userId,
+  });
+  return data.reply_list;
 }
