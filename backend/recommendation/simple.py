@@ -78,7 +78,10 @@ def find_sim(target,good_vectors,good_index,top):
     return result
 
 
-good_index = read_good_index_dict('data/movies.csv')
-good_vector_list = build_good_vector('data/ratings.csv')
+good_index = read_good_index_dict('movies.csv')
+good_vector_list = build_good_vector('ratings.csv')
 print(good_vector_list.keys())
+temp_result = find_sim(good_vector_list[1],good_vector_list,good_index,10)
+for key in temp_result.keys():
+    print(temp_result[key])
 print(find_sim(good_vector_list[1],good_vector_list,good_index,10))
